@@ -7,4 +7,5 @@ pipeline {
     }
     stage('Connecting to Registry'){}
     stage('Pushing the Image'){}
+  }
 }
