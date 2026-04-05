@@ -3,9 +3,11 @@ pipeline {
 
   stages{
     stage('Building an Image'){
-      sh "docker image build -t kbindesh/flaskapp:$BUILD_NUMBER"
+      steps{
+        sh "docker image build -t kbindesh/flaskapp:$BUILD_NUMBER"
+        echo "Successfully build an Image"
+        sh "docker image ls"
+      }
     }
-    stage('Connecting to Registry'){}
-    stage('Pushing the Image'){}
   }
 }
