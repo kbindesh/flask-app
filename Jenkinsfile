@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDS = credentials('docker_creds')
+    DOCKERHUB_CREDS = 'docker_creds'
   }
 
   stages{
@@ -15,8 +15,11 @@ pipeline {
     }
     stage('Connecting to Registry'){
       steps{
-        sh "echo $DOCKERHUB_CREDS_PSW | docker login -u DOCKERHUB_CREDS_USR --password-stdin"
-        echo "Successfully connected to DockerHub"
+        script{
+          withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDS, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]){
+            sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+          }
+        }
       }
     }
   }
