@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDS = 'docker_creds'
+    IMAGE_NAME = 'kbindesh/flaskapp'
   }
 
   stages{
@@ -13,11 +14,12 @@ pipeline {
         sh "docker image ls"
       }
     }
-    stage('Connecting to Registry'){
+    stage('Connecting to Registry and pushing img'){
       steps{
         script{
           withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDS, usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]){
             sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+            sh "docker image push kbindesh/flaskapp:$BUILD_NUMBER"
           }
         }
       }
